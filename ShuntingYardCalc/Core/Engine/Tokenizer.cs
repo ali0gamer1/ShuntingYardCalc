@@ -3,18 +3,8 @@ using static ShuntingYardCalc.Program;
 
 namespace ShuntingYardCalc
 {
-    public class Tokenizer
+    public partial class Tokenizer
     {
-        public enum TokenType
-        {
-            None,
-            Number,
-            Identifier,
-            UnaryOperator,
-            Parenthesis,
-            Comma,
-            Operator
-        }
 
 
         public struct Token(TokenType type, string token)

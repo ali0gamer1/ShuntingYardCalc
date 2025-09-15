@@ -1,4 +1,5 @@
-﻿using static ShuntingYardCalc.Program;
+﻿
+
 using static ShuntingYardCalc.Tokenizer;
 
 namespace ShuntingYardCalc
