@@ -12,7 +12,7 @@ namespace ShuntingYardCalc
             binaryOperations = new Dictionary<string, Func<double, double, double>>
         {
             { "+", (a, b) => a + b },
-            { "-", (a, b) => a - b },
+            { "-", (a, b) => a - b } ,
             { "*", (a, b) => a * b },
             { "/", (a, b) => {
 
