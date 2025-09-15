@@ -5,8 +5,6 @@ namespace ShuntingYardCalc
     public class Evaluator 
     {
 
-        
-
 
         public static readonly Dictionary<string, Func<double, double, double>>
             binaryOperations = new Dictionary<string, Func<double, double, double>>
@@ -76,7 +74,7 @@ namespace ShuntingYardCalc
                 }
                 else
                 if (IsValidFunc(token))
-                {// use argument list later (if possible) TODO.
+                {
 
                     double tempArgCount;
                     if (!resultstack.TryPop(out tempArgCount))
