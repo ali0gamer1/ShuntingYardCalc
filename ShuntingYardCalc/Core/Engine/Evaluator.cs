@@ -1,5 +1,4 @@
-﻿using static ShuntingYardCalc.Program;
-
+﻿
 namespace ShuntingYardCalc
 {
     public class Evaluator 
@@ -53,7 +52,7 @@ namespace ShuntingYardCalc
 
             foreach (string token in tokenList)
             {
-                if (OperatorRegistry.IsOperator(token))
+                if (OperatorInfo.IsOperator(token))
                 {
                     if (TryPopTwo(resultstack, out a, out b))
                     {

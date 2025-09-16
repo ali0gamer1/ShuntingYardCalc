@@ -1,22 +1,13 @@
 ﻿
 
-using static ShuntingYardCalc.Tokenizer;
+
+using ShuntingYardCalc.Specs;
 
 namespace ShuntingYardCalc
 {
     public class Parser
     {
-        public static Dictionary<string, OperatorInfo> operators = new Dictionary<string, OperatorInfo>()
-        {
-            { "+", new OperatorInfo(1, "Left") },
-            { "-", new OperatorInfo(1, "Left") },
-            { "*", new OperatorInfo(2, "Left") },
-            { "/", new OperatorInfo(2, "Left") },
-            { "^", new OperatorInfo(3, "Right") },
-            { "u+", new OperatorInfo(4, "Right") },
-            { "u-", new OperatorInfo(4, "Right") },
-            {"func", new OperatorInfo(9, "none") }
-        };
+        
 
         public static Stack<string> opStack = new Stack<string>();
         public static Stack<int> argCountStack = new Stack<int>();
@@ -34,7 +25,7 @@ namespace ShuntingYardCalc
                 }
             }
         }
-        public static List<string> ToRPN(List<Token> tokenList)
+        public static List<string> ToRPN(List<Tokenizer.Token> tokenList)
         {
 
             var retList = new List<string>();
@@ -46,7 +37,7 @@ namespace ShuntingYardCalc
 
             for (int i = 0; i < tokenList.Count(); i++)
             {
-                Token currentToken = tokenList[i];
+                Tokenizer.Token currentToken = tokenList[i];
                 temp.Add(currentToken.token);
 
                 if (currentToken.type == TokenType.Number)
@@ -109,7 +100,7 @@ namespace ShuntingYardCalc
                     string? topStack;
                     bool isTopAccessible;
 
-                    while ((isTopAccessible = opStack.TryPeek(out topStack)) && topStack != "(" && (  operators[topStack].Precedence > operators[currentToken.token].Precedence || operators[topStack].Precedence == operators[currentToken.token].Precedence && operators[currentToken.token].Associativity == "Left"))
+                    while ((isTopAccessible = opStack.TryPeek(out topStack)) && topStack != "(" && (  OperatorSpec.operators[topStack].Precedence > OperatorSpec.operators[currentToken.token].Precedence || OperatorSpec.operators[topStack].Precedence == OperatorSpec.operators[currentToken.token].Precedence && OperatorSpec.operators[currentToken.token].Associativity == "Left"))
                     {
                         retList.Add(opStack.Pop());
 

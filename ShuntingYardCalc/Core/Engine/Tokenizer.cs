@@ -1,9 +1,8 @@
 ﻿
-using static ShuntingYardCalc.Program;
 
 namespace ShuntingYardCalc
 {
-    public partial class Tokenizer
+    public class Tokenizer
     {
 
 
@@ -85,7 +84,7 @@ namespace ShuntingYardCalc
 
                 }
 
-                else if (OperatorRegistry.IsOperator(c))
+                else if (OperatorInfo.IsOperator(c))
                 {
 
                     if (currentToken != "")
