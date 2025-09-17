@@ -1,4 +1,6 @@
 ﻿
+using ShuntingYardCalc.Specs;
+
 namespace ShuntingYardCalc
 {
     public class Evaluator 
@@ -25,7 +27,7 @@ namespace ShuntingYardCalc
             return f && s;
         }
 
-        public static double EvalRPN(List<string> tokenList, OperatorRegistry opreg)
+        public static double EvalRPN(List<string> tokenList, Registry registry)
         {
             Stack<double> resultstack = new Stack<double>();
             double a, b;
@@ -33,13 +35,14 @@ namespace ShuntingYardCalc
 
             foreach (string token in tokenList)
             {
-                if (opreg.IsOperator(token))
+                if (registry.IsOperator(token))
                 {
 
-                    var op = opreg.GetOperator(token);
-                    
+                    OperatorSpec op;
+                    if (!registry.TryGetOperator(token, out op))
+                        throw new Exception("Cannot get operator");
 
-                    if(op.UnaryOperation == null && op.Operation != null)
+                    if (op.UnaryOperation == null && op.Operation != null)
                     {
                         if (TryPopTwo(resultstack, out a, out b))
                         {
@@ -64,8 +67,6 @@ namespace ShuntingYardCalc
                         }    
                         
                     }
-
-
                     
                 }
                 else

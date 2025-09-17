@@ -25,7 +25,7 @@ namespace ShuntingYardCalc
                 }
             }
         }
-        public static List<string> ToRPN(List<Tokenizer.Token> tokenList, OperatorRegistry opreg)
+        public static List<string> ToRPN(List<Tokenizer.Token> tokenList, Registry registry)
         {
 
             var retList = new List<string>();
@@ -99,8 +99,13 @@ namespace ShuntingYardCalc
                 {
                     string? topStack;
                     bool isTopAccessible;
+                    OperatorSpec tempStackOp;
+                    OperatorSpec tempCurrentOp;
 
-                    while ((isTopAccessible = opStack.TryPeek(out topStack)) && topStack != "(" && (opreg.GetOperator(topStack).Precedence > opreg.GetOperator(currentToken.token).Precedence || opreg.GetOperator(topStack).Precedence == opreg.GetOperator(currentToken.token).Precedence && opreg.GetOperator(currentToken.token).Associativity == Associativity.Left))
+
+
+
+                    while ((isTopAccessible = opStack.TryPeek(out topStack)) && topStack != "(" && registry.TryGetOperator(topStack, out tempStackOp) && registry.TryGetOperator(currentToken.token, out tempCurrentOp) && (tempStackOp.Precedence > tempCurrentOp.Precedence || tempStackOp.Precedence ==tempCurrentOp.Precedence &&tempCurrentOp.Associativity == Associativity.Left))
                     {
                         retList.Add(opStack.Pop());
 

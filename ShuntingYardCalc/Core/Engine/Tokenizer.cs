@@ -13,7 +13,7 @@ namespace ShuntingYardCalc
             public string token = token;
         }
 
-        public static List<Token> Tokenize(string input, OperatorRegistry opreg)
+        public static List<Token> Tokenize(string input, Registry registry)
         {
             var retList = new List<Token>();
 
@@ -85,7 +85,7 @@ namespace ShuntingYardCalc
 
                 }
 
-                else if (opreg.IsOperator(c))
+                else if (registry.IsOperator(c))
                 {
 
                     if (currentToken != "")
