@@ -5,26 +5,7 @@ namespace ShuntingYardCalc
     {
 
 
-        public static readonly Dictionary<string, Func<double, double, double>>
-            binaryOperations = new Dictionary<string, Func<double, double, double>>
-        {
-            { "+", (a, b) => a + b },
-            { "-", (a, b) => a - b } ,
-            { "*", (a, b) => a * b },
-            { "/", (a, b) => {
-
-                if (b == 0)
-                {  throw new DivideByZeroException();
-
-                } else
-                {
-                    return a / b;
-                }
-
-            }},
-            { "^", (a, b) => Math.Pow(a, b) },
-
-        };
+        
 
 
         public static Dictionary<string, Func<double, double, double>>
@@ -44,7 +25,7 @@ namespace ShuntingYardCalc
             return f && s;
         }
 
-        public static double EvalRPN(List<string> tokenList)
+        public static double EvalRPN(List<string> tokenList, OperatorRegistry opreg)
         {
             Stack<double> resultstack = new Stack<double>();
             double a, b;
@@ -52,24 +33,29 @@ namespace ShuntingYardCalc
 
             foreach (string token in tokenList)
             {
-                if (OperatorInfo.IsOperator(token))
+                if (opreg.IsOperator(token))
                 {
-                    if (TryPopTwo(resultstack, out a, out b))
-                    {
 
-                        if (binaryOperations.TryGetValue(token, out var operation))
+                    var op = opreg.GetOperator(token);
+                    var operation = op.Operation;
+                    if(op.UnaryOperation == null && op.Operation != null)
+                    {
+                        if (TryPopTwo(resultstack, out a, out b))
                         {
-                            resultstack.Push(operation(a, b));
+
+                            resultstack.Push(operation(a,b));
+
+
                         }
                         else
-                            throw new Exception("Evaluation error");
-
+                        {
+                            throw new Exception("Syntax error");
+                        }
 
                     }
-                    else
-                    {
-                        throw new Exception("Syntax error");
-                    }
+
+
+                    
                 }
                 else
                 if (IsValidFunc(token))
