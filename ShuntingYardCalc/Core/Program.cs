@@ -19,7 +19,7 @@ namespace ShuntingYardCalc
             //default operators
             var ops= new[]
             {
-                //i could've included isUnary() but instead i defined separate operations for unary and binary operators
+                //i could've included isUnary but instead i defined separate operations for unary and binary operators
                 new OperatorSpec {Symbol = "+", Associativity = Associativity.Left, Precedence = 1, Arity = 2, Operation = (double a, double b)=> (a + b)   },
                 new OperatorSpec {Symbol = "-", Associativity = Associativity.Left, Precedence = 1, Arity = 2, Operation = (double a, double b)=>(a - b)  },
                 new OperatorSpec {Symbol = "*", Associativity = Associativity.Left, Precedence = 2, Arity = 2, Operation = (double a, double b)=>(a * b)  },
@@ -55,6 +55,17 @@ namespace ShuntingYardCalc
                         else
                             throw new Exception("argument number invalid");
                     }
+
+                },
+
+                new FunctionSpec{Symbol = "floor", Precedence = 9, 
+                    
+                    Operation = (double[] args)=>{return Math.Floor(args[0]); }
+                
+                },
+                new FunctionSpec{Symbol = "ceil", Precedence = 9,
+
+                    Operation = (double[] args)=>{return Math.Ceiling(args[0]); }
 
                 },
 

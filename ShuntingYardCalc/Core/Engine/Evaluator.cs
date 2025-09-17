@@ -67,7 +67,7 @@ namespace ShuntingYardCalc
                     
                 }
                 else
-                if (IsValidFunc(token))
+                if (registry.IsFunc(token))
                 {
 
                     double tempArgCount;
@@ -79,60 +79,23 @@ namespace ShuntingYardCalc
 
                     int argCount = (int)tempArgCount;
 
-                    if (token == "pow")
+                    FunctionSpec funcspec;
+
+                    double[] args = new double[argCount];
+
+                    for(int i = 0; i < argCount; i++)
                     {
-                        if (TryPopTwo(resultstack, out a, out b))
-                        {
-
-                            if (functionOperations.TryGetValue(token, out var operation))
-                            {
-                                resultstack.Push(operation(a, b));
-                            }
-                            else
-                                throw new Exception("Evaluation error");
-
-                        }
-                        else
-                        {
-                            throw new Exception("Syntax error");
-                        }
-                    }
-                    else
-                    if (token == "max")
-                    {
-                        double maxNum;
-                        resultstack.TryPop(out maxNum);
-                        argCount--;
-                        while (argCount-- > 0)
-                        {
-
-
-                            double num = resultstack.Pop();
-
-                            if (num > maxNum)
-                                maxNum = num;
-
-
-                        }
-
-                        resultstack.Push(maxNum);
-
-
-
+                        args[i] = resultstack.Pop();
                     }
 
-
-
-                }
-                else
-                if (token == "u+")
-                { }
-                else
-                if (token == "u-")
-                {
-                    resultstack.Push(-1 * resultstack.Pop());
+                    if (registry.TryGetFunc(token, out funcspec))
+                    {
+                        resultstack.Push(funcspec.Operation(args));    
+                        
+                    }    
 
                 }
+              
                 else
                 if (token.Length > 0 && token[0] == '#')
                 {
@@ -153,11 +116,6 @@ namespace ShuntingYardCalc
 
         }
 
-
-        public static bool IsValidFunc(string token)
-        {
-            return token == "pow" || token == "max" || token == "min" || token == "sin" || token == "cos";
-        }
 
 
 
