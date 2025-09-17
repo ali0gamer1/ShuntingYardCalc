@@ -7,9 +7,6 @@ namespace ShuntingYardCalc
     {
 
 
-        
-
-
         public static Dictionary<string, Func<double, double, double>>
             functionOperations = new Dictionary<string, Func<double, double, double>>
         {
