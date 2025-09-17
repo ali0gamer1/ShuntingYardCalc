@@ -1,20 +1,10 @@
 ﻿
-using static ShuntingYardCalc.Program;
+
 
 namespace ShuntingYardCalc
 {
     public class Tokenizer
     {
-        public enum TokenType
-        {
-            None,
-            Number,
-            Identifier,
-            UnaryOperator,
-            Parenthesis,
-            Comma,
-            Operator
-        }
 
 
         public struct Token(TokenType type, string token)
@@ -23,7 +13,7 @@ namespace ShuntingYardCalc
             public string token = token;
         }
 
-        public static List<Token> Tokenize(string input)
+        public static List<Token> Tokenize(string input, Registry registry)
         {
             var retList = new List<Token>();
 
@@ -95,7 +85,7 @@ namespace ShuntingYardCalc
 
                 }
 
-                else if (OperatorRegistry.IsOperator(c))
+                else if (registry.IsOperator(c))
                 {
 
                     if (currentToken != "")

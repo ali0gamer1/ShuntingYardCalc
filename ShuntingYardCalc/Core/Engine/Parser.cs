@@ -1,21 +1,13 @@
-﻿using static ShuntingYardCalc.Program;
-using static ShuntingYardCalc.Tokenizer;
+﻿
+
+
+using ShuntingYardCalc.Specs;
 
 namespace ShuntingYardCalc
 {
     public class Parser
     {
-        public static Dictionary<string, OperatorInfo> operators = new Dictionary<string, OperatorInfo>()
-        {
-            { "+", new OperatorInfo(1, "Left") },
-            { "-", new OperatorInfo(1, "Left") },
-            { "*", new OperatorInfo(2, "Left") },
-            { "/", new OperatorInfo(2, "Left") },
-            { "^", new OperatorInfo(3, "Right") },
-            { "u+", new OperatorInfo(4, "Right") },
-            { "u-", new OperatorInfo(4, "Right") },
-            {"func", new OperatorInfo(9, "none") }
-        };
+        
 
         public static Stack<string> opStack = new Stack<string>();
         public static Stack<int> argCountStack = new Stack<int>();
@@ -33,7 +25,7 @@ namespace ShuntingYardCalc
                 }
             }
         }
-        public static List<string> ToRPN(List<Token> tokenList)
+        public static List<string> ToRPN(List<Tokenizer.Token> tokenList, Registry registry)
         {
 
             var retList = new List<string>();
@@ -45,7 +37,7 @@ namespace ShuntingYardCalc
 
             for (int i = 0; i < tokenList.Count(); i++)
             {
-                Token currentToken = tokenList[i];
+                Tokenizer.Token currentToken = tokenList[i];
                 temp.Add(currentToken.token);
 
                 if (currentToken.type == TokenType.Number)
@@ -107,8 +99,13 @@ namespace ShuntingYardCalc
                 {
                     string? topStack;
                     bool isTopAccessible;
+                    OperatorSpec tempStackOp;
+                    OperatorSpec tempCurrentOp;
 
-                    while ((isTopAccessible = opStack.TryPeek(out topStack)) && topStack != "(" && (  operators[topStack].Precedence > operators[currentToken.token].Precedence || operators[topStack].Precedence == operators[currentToken.token].Precedence && operators[currentToken.token].Associativity == "Left"))
+
+
+
+                    while ((isTopAccessible = opStack.TryPeek(out topStack)) && topStack != "(" && registry.TryGetOperator(topStack, out tempStackOp) && registry.TryGetOperator(currentToken.token, out tempCurrentOp) && (tempStackOp.Precedence > tempCurrentOp.Precedence || tempStackOp.Precedence ==tempCurrentOp.Precedence &&tempCurrentOp.Associativity == Associativity.Left))
                     {
                         retList.Add(opStack.Pop());
 
@@ -153,7 +150,7 @@ namespace ShuntingYardCalc
 
                         isTopAccessible = opStack.TryPeek(out topStack);
 
-                        if (Evaluator.IsValidFunc(topStack))
+                        if (registry.IsFunc(topStack))
                         {
                             opStack.Pop();
 
@@ -183,6 +180,7 @@ namespace ShuntingYardCalc
 
 
                     }
+
 
                 }
             }
