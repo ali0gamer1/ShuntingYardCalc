@@ -37,21 +37,32 @@ namespace ShuntingYardCalc
                 {
 
                     var op = opreg.GetOperator(token);
-                    var operation = op.Operation;
+                    
+
                     if(op.UnaryOperation == null && op.Operation != null)
                     {
                         if (TryPopTwo(resultstack, out a, out b))
                         {
-
+                            var operation = op.Operation;
                             resultstack.Push(operation(a,b));
-
-
                         }
                         else
                         {
                             throw new Exception("Syntax error");
                         }
 
+                    }
+                    else 
+                    if (op.UnaryOperation != null)
+                    {
+                        if (resultstack.TryPop(out double topstack))
+                        {
+    
+                            var operation = op.UnaryOperation;
+                            resultstack.Push(operation(topstack));
+
+                        }    
+                        
                     }
 
 

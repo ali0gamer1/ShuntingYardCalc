@@ -19,6 +19,7 @@ namespace ShuntingYardCalc
 
             var ops= new[]
             {
+                //i could've included isUnary() but instead i defined separate operations for unary and binary operators
                 new OperatorSpec {Symbol = "+", Associativity = Associativity.Left, Precedence = 1, Arity = 2, Operation = (double a, double b)=> (a + b)   },
                 new OperatorSpec {Symbol = "-", Associativity = Associativity.Left, Precedence = 1, Arity = 2, Operation = (double a, double b)=>(a - b)  },
                 new OperatorSpec {Symbol = "*", Associativity = Associativity.Left, Precedence = 2, Arity = 2, Operation = (double a, double b)=>(a * b)  },
@@ -41,13 +42,13 @@ namespace ShuntingYardCalc
         {
 
 
-
+            RegisterDefaults();
 
             while (true)
             {
                 int i = 1;
 
-                RegisterDefaults();
+               
                 string? inp = Console.ReadLine();
                 List<Tokenizer.Token> ls = Tokenizer.Tokenize(inp, opreg);
 
