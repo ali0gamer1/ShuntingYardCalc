@@ -39,6 +39,7 @@ namespace ShuntingYardCalc
 
             var funcs = new[]
             {
+
                 new FunctionSpec{Symbol = "max", Precedence = 9,
                     Operation = (double[] args)=>
                     {
@@ -69,6 +70,24 @@ namespace ShuntingYardCalc
 
                 },
 
+                new FunctionSpec{Symbol = "round", Precedence = 9,
+
+                    Operation = (double[] args)=>{return Math.Round(args[0]); }
+
+                },
+
+                new FunctionSpec{Symbol = "random", Precedence = 8,
+
+                    Operation = (double[] args)=>
+                    
+                    {
+                        double d = new Random().Next(10);
+                        Console.WriteLine(d);
+                        return d;
+                    
+                    }
+
+                },
 
 
             };

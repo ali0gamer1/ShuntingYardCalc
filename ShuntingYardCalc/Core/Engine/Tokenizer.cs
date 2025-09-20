@@ -36,7 +36,7 @@ namespace ShuntingYardCalc
                 char c = input[i];
 
 
-                if ((c == '+' || c == '-') && (lastTokenType == TokenType.Operator || lastTokenType == TokenType.Comma || lastTokenType == TokenType.None || lastTokenType == TokenType.Parenthesis))
+                if ((c == '+' || c == '-') && (lastTokenType == TokenType.Operator || lastTokenType == TokenType.Comma || (lastTokenType == TokenType.None && i==0) || lastTokenType == TokenType.Parenthesis))
                 {
 
 
@@ -121,10 +121,12 @@ namespace ShuntingYardCalc
 
                     }
 
+
                     if (c == '(')
                         lastTokenType = TokenType.Parenthesis;
-
-
+                    else
+                    if (lastTokenType == TokenType.Parenthesis)
+                        lastTokenType = TokenType.None;
 
                     retList.Add(new Token(TokenType.Parenthesis, c.ToString()));
 

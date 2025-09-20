@@ -32,8 +32,7 @@ namespace ShuntingYardCalc
 
             var temp = new List<string>();
 
-
-
+   
 
             for (int i = 0; i < tokenList.Count(); i++)
             {
@@ -164,8 +163,7 @@ namespace ShuntingYardCalc
                             if (n == 0 && seen) n = 1;
 
                             // Policy: forbid empty lists (change if you want max() to be allowed)
-                            if (n == 0) throw new Exception("syntax error: empty argument list");
-
+                            
                             // Emit variadic function token (minimal change: encode arity in the token)
                             //retList.Add($"{topStack}#{n}");
 

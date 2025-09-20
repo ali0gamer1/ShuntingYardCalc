@@ -7,12 +7,7 @@ namespace ShuntingYardCalc
     {
 
 
-        public static Dictionary<string, Func<double, double, double>>
-            functionOperations = new Dictionary<string, Func<double, double, double>>
-        {
-            { "pow", (a, b) => Math.Pow(a,b) },
 
-        };
 
         static bool TryPopTwo(Stack<double> stack, out double a, out double b)
         {
@@ -28,7 +23,6 @@ namespace ShuntingYardCalc
         {
             Stack<double> resultstack = new Stack<double>();
             double a, b;
-
 
             foreach (string token in tokenList)
             {
@@ -69,8 +63,10 @@ namespace ShuntingYardCalc
                 else
                 if (registry.IsFunc(token))
                 {
-
+                    
+               
                     double tempArgCount;
+                    
                     if (!resultstack.TryPop(out tempArgCount))
                     {
                         throw new Exception("illegal operation");
