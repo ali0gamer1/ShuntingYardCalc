@@ -52,7 +52,7 @@ namespace ShuntingYardCalc
                     Operation = (double[] args)=>
                     {
                         if (args.Length == 2)
-                            return Math.Pow(args[0], args[1]);
+                            return Math.Pow(args[1], args[0]);
                         else
                             throw new Exception("argument number invalid");
                     }
