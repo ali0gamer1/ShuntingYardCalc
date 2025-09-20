@@ -58,8 +58,8 @@ namespace ShuntingYardCalc
 
                 },
 
-                new FunctionSpec{Symbol = "floor", Precedence = 9, 
-                    
+                new FunctionSpec{Symbol = "floor", Precedence = 9,
+
                     Operation = (double[] args)=>{return Math.Floor(args[0]); }
                 
                 },
@@ -92,10 +92,15 @@ namespace ShuntingYardCalc
 
             while (true)
             {
-                int i = 1;
 
                
                 string? inp = Console.ReadLine();
+                
+                if (string.IsNullOrEmpty(inp))
+                {
+                    throw new ArgumentNullException();
+                }
+
                 List<Tokenizer.Token> ls = Tokenizer.Tokenize(inp, registry);
 
 
