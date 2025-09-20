@@ -149,7 +149,7 @@ namespace ShuntingYardCalc
 
                         isTopAccessible = opStack.TryPeek(out topStack);
 
-                        if (registry.IsFunc(topStack))
+                        if (isTopAccessible && registry.IsFunc(topStack))
                         {
                             opStack.Pop();
 
