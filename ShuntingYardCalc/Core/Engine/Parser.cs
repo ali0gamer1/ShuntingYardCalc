@@ -164,11 +164,6 @@ namespace ShuntingYardCalc
 
                             FunctionSpec func;
                             registry.TryGetFunc(topStack, out func);
-                            
-                            // Policy: forbid empty lists (change if you want max() to be allowed)
-
-                            // Emit variadic function token (minimal change: encode arity in the token)
-                            //retList.Add($"{topStack}#{n}");
 
                             if (func.FixedArity)
                             {
@@ -181,7 +176,7 @@ namespace ShuntingYardCalc
                             }
                             else
                             {
-                                if (n < func.MinArity || (func.MaxArity != null && n > func.MaxArity))
+                                if (!func.Overloads.ContainsKey(n) && (func.MinArity == null || func.MinArity > n))
                                 {
                                     throw new Exception("invalid number of arguments");
                                 }

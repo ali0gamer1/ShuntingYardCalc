@@ -4,7 +4,7 @@ namespace ShuntingYardCalc
     public  interface FunctionRegistry
     {
          Dictionary<string, FunctionSpec> Functions { get; }
-
+         
 
 
 

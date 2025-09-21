@@ -75,18 +75,18 @@ namespace ShuntingYardCalc
 
                     int argCount = (int)tempArgCount;
 
-                    FunctionSpec funcspec;
 
                     double[] args = new double[argCount];
 
-                    for(int i = 0; i < argCount; i++)
+                    for (int i = 0; i < argCount; i++)
                     {
                         args[i] = resultstack.Pop();
                     }
 
-                    if (registry.TryGetFunc(token, out funcspec))
+                    if (registry.TryGetFunc(token, out FunctionSpec funcspec))
                     {
-                        resultstack.Push(funcspec.Operation(args));    
+
+                        resultstack.Push(funcspec.Run( args));    
                         
                     }    
 

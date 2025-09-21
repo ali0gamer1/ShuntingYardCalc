@@ -40,15 +40,9 @@ namespace ShuntingYardCalc
             var funcs = new[]
             {
 
-                new FunctionSpec{Symbol = "max", Precedence = 9,
-                    Operation = (double[] args)=>
-                    {
-                        return args.Max();
-                    }
                 
-                },
 
-                new FunctionSpec{Symbol = "pow", Precedence = 9,
+                new FunctionSpec{Symbol = "pow",
                     Operation = (double[] args)=>
                     {
                         if (args.Length == 2)
@@ -61,13 +55,13 @@ namespace ShuntingYardCalc
                     
                 },
 
-                new FunctionSpec{Symbol = "floor", Precedence = 9,
+                new FunctionSpec{Symbol = "floor",
 
                     Operation = (double[] args)=>{return Math.Floor(args[0]); },
                     FixedArity = true,
                     Arity= 1
                 },
-                new FunctionSpec{Symbol = "ceil", Precedence = 9,
+                new FunctionSpec{Symbol = "ceil",
 
                     Operation = (double[] args)=>{return Math.Ceiling(args[0]); },
                     FixedArity = true,
@@ -75,26 +69,49 @@ namespace ShuntingYardCalc
 
                 },
 
-                new FunctionSpec{Symbol = "round", Precedence = 9,
+                new FunctionSpec{Symbol = "round",
 
                     Operation = (double[] args)=>{return Math.Round(args[0]); },
+
                     FixedArity = true,
                     Arity= 1
 
                 },
 
-                new FunctionSpec{Symbol = "random", Precedence = 9,
+                new FunctionSpec{Symbol = "random",
 
-                    Operation = (double[] args)=>
+                    Overloads =  new Dictionary<int, Func<double[], double>>
                     {
-                        double d = new Random().Next(10);
-                        return d;
+                    
+                        [0]=(double[] args) =>
+                        {
+                            return new Random().Next();
+                        },
+                        [1]=(double[] args) =>
+                        {
+                            return new Random().Next((int)args[0]);
+                            
+                        },
+                        [2]=(double[] args) =>
+                        {
+                            return new Random().Next((int)args[1], (int)args[0]);
+
+                        },
                     },
+                    
                     FixedArity = false,
-                    MinArity = 0,
-                    MaxArity = 2
+                },
+
+                new FunctionSpec{Symbol = "max",
+
+                    
+                    Operation = (double[] args)=>{return args.Max(); },
+
+                    FixedArity = false,
+                    MinArity = 1,
 
                 },
+
 
 
             };
