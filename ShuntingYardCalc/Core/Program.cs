@@ -82,7 +82,6 @@ namespace ShuntingYardCalc
                     
                     {
                         double d = new Random().Next(10);
-                        Console.WriteLine(d);
                         return d;
                     
                     }
