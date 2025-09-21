@@ -162,10 +162,31 @@ namespace ShuntingYardCalc
                             // If we never hit a comma but did see a value, it was a single-arg call
                             if (n == 0 && seen) n = 1;
 
-                            // Policy: forbid empty lists (change if you want max() to be allowed)
+                            FunctionSpec func;
+                            registry.TryGetFunc(topStack, out func);
                             
+                            // Policy: forbid empty lists (change if you want max() to be allowed)
+
                             // Emit variadic function token (minimal change: encode arity in the token)
                             //retList.Add($"{topStack}#{n}");
+
+                            if (func.FixedArity)
+                            {
+                                if (func.Arity != n)
+                                {
+                                    throw new Exception("invalid number of arguments");
+                                    
+                                }
+
+                            }
+                            else
+                            {
+                                if (n < func.MinArity || (func.MaxArity != null && n > func.MaxArity))
+                                {
+                                    throw new Exception("invalid number of arguments");
+                                }
+                            }
+
 
 
                             retList.Add($"#{n}");

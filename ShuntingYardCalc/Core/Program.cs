@@ -55,36 +55,44 @@ namespace ShuntingYardCalc
                             return Math.Pow(args[1], args[0]);
                         else
                             throw new Exception("argument number invalid");
-                    }
-
+                    },
+                    FixedArity = true,
+                    Arity = 2
+                    
                 },
 
                 new FunctionSpec{Symbol = "floor", Precedence = 9,
 
-                    Operation = (double[] args)=>{return Math.Floor(args[0]); }
-                
+                    Operation = (double[] args)=>{return Math.Floor(args[0]); },
+                    FixedArity = true,
+                    Arity= 1
                 },
                 new FunctionSpec{Symbol = "ceil", Precedence = 9,
 
-                    Operation = (double[] args)=>{return Math.Ceiling(args[0]); }
+                    Operation = (double[] args)=>{return Math.Ceiling(args[0]); },
+                    FixedArity = true,
+                    Arity= 1
 
                 },
 
                 new FunctionSpec{Symbol = "round", Precedence = 9,
 
-                    Operation = (double[] args)=>{return Math.Round(args[0]); }
+                    Operation = (double[] args)=>{return Math.Round(args[0]); },
+                    FixedArity = true,
+                    Arity= 1
 
                 },
 
-                new FunctionSpec{Symbol = "random", Precedence = 8,
+                new FunctionSpec{Symbol = "random", Precedence = 9,
 
                     Operation = (double[] args)=>
-                    
                     {
                         double d = new Random().Next(10);
                         return d;
-                    
-                    }
+                    },
+                    FixedArity = false,
+                    MinArity = 0,
+                    MaxArity = 2
 
                 },
 
@@ -120,7 +128,6 @@ namespace ShuntingYardCalc
                 }
 
                 List<Tokenizer.Token> ls = Tokenizer.Tokenize(inp, registry);
-
 
                 List<string> hay = Parser.ToRPN(ls, registry);
 
