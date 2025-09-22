@@ -1,6 +1,5 @@
 ﻿
 using ShuntingYardCalc.Specs;
-using System;
 
 namespace ShuntingYardCalc
 {
@@ -11,26 +10,26 @@ namespace ShuntingYardCalc
     internal class Program
     {
         public static Registry registry = new();
-        
+
         public static void RegisterDefaults()
         {
 
-            
+
             //default operators
-            var ops= new[]
+            var ops = new[]
             {
                 //i could've included isUnary but instead i defined separate operations for unary and binary operators
                 new OperatorSpec {Symbol = "+", Associativity = Associativity.Left, Precedence = 1, Arity = 2, Operation = (double a, double b)=> (a + b)   },
                 new OperatorSpec {Symbol = "-", Associativity = Associativity.Left, Precedence = 1, Arity = 2, Operation = (double a, double b)=>(a - b)  },
                 new OperatorSpec {Symbol = "*", Associativity = Associativity.Left, Precedence = 2, Arity = 2, Operation = (double a, double b)=>(a * b)  },
                 new OperatorSpec {Symbol = "/", Associativity = Associativity.Left, Precedence = 2, Arity = 2, Operation = (double a, double b)=>{ if (b == 0) {throw new DivideByZeroException(); } else return a / b; }  },
-                
+
                 new OperatorSpec {Symbol = "^", Associativity = Associativity.Right, Precedence = 3, Arity = 2, Operation = (double a, double b)=>(Math.Pow(a, b))  },
                 new OperatorSpec {Symbol = "u-", Associativity = Associativity.Right, Precedence = 3, Arity = 2, UnaryOperation = (double a)=>(a * -1)  },
                 new OperatorSpec {Symbol = "u+", Associativity = Associativity.Right, Precedence = 3, Arity = 2, UnaryOperation = (double a)=>(a)  },
             };
 
-            foreach(OperatorSpec opspec in ops)
+            foreach (OperatorSpec opspec in ops)
             {
                 registry.RegisterOperator(opspec.Symbol, opspec);
             }
@@ -40,7 +39,7 @@ namespace ShuntingYardCalc
             var funcs = new[]
             {
 
-                
+
 
                 new FunctionSpec{Symbol = "pow",
                     Operation = (double[] args)=>
@@ -52,7 +51,7 @@ namespace ShuntingYardCalc
                     },
                     FixedArity = true,
                     Arity = 2
-                    
+
                 },
 
                 new FunctionSpec{Symbol = "floor",
@@ -82,7 +81,7 @@ namespace ShuntingYardCalc
 
                     Overloads =  new Dictionary<int, Func<double[], double>>
                     {
-                    
+
                         [0]=(double[] args) =>
                         {
                             return new Random().Next();
@@ -90,7 +89,7 @@ namespace ShuntingYardCalc
                         [1]=(double[] args) =>
                         {
                             return new Random().Next((int)args[0]);
-                            
+
                         },
                         [2]=(double[] args) =>
                         {
@@ -98,26 +97,54 @@ namespace ShuntingYardCalc
 
                         },
                     },
-                    
+
                     FixedArity = false,
                 },
 
                 new FunctionSpec{Symbol = "max",
 
-                    
+
                     Operation = (double[] args)=>{return args.Max(); },
 
                     FixedArity = false,
                     MinArity = 1,
 
                 },
+                new FunctionSpec{Symbol = "min",
+
+
+                    Operation = (double[] args)=>{return args.Min(); },
+
+                    FixedArity = false,
+                    MinArity = 1,
+
+                },
+                new FunctionSpec{Symbol = "sqrt",
+
+
+                    Operation = (double[] args)=>{return Math.Sqrt(args[0]); },
+
+                    FixedArity = true,
+                    Arity = 1,
+
+                },
+                new FunctionSpec{Symbol = "abs",
+
+
+                    Operation = (double[] args)=>{return Math.Abs(args[0]); },
+
+                    FixedArity = true,
+                    Arity = 1,
+
+                },
+
 
 
 
             };
 
 
-            foreach(var funcspec in funcs)
+            foreach (var funcspec in funcs)
             {
                 registry.RegisterFunction(funcspec.Symbol, funcspec);
             }
@@ -125,7 +152,7 @@ namespace ShuntingYardCalc
 
 
         }
-  
+
 
         static void Main(string[] args)
         {
@@ -136,9 +163,9 @@ namespace ShuntingYardCalc
             while (true)
             {
 
-               
+
                 string? inp = Console.ReadLine();
-                
+
                 if (string.IsNullOrEmpty(inp))
                 {
                     throw new ArgumentNullException();
@@ -148,11 +175,6 @@ namespace ShuntingYardCalc
 
                 List<string> hay = Parser.ToRPN(ls, registry);
 
-                foreach(var s in hay)
-                {
-                    Console.Write($"{s}, ");
-                }
-                Console.WriteLine();
                 Console.WriteLine(Evaluator.EvalRPN(hay, registry));
 
 
