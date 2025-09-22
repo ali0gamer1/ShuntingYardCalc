@@ -86,7 +86,7 @@ namespace ShuntingYardCalc
                     if (registry.TryGetFunc(token, out FunctionSpec funcspec))
                     {
 
-                        resultstack.Push(funcspec.Run( args));    
+                        resultstack.Push(funcspec.Run(args, argCount));    
                         
                     }    
 

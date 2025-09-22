@@ -17,14 +17,16 @@ namespace ShuntingYardCalc
         private int? minArity;
 
 
-        public double Run(double[] args)
+        public double Run(double[] args, int argcount)
         {
             if (minArity != null && operation!= null) 
             {
                 return operation(args);
             }
 
-            return overloads[arity.GetValueOrDefault()](args);
+
+
+            return overloads[argcount](args);
 
         }
 

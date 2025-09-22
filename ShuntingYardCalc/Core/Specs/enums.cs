@@ -18,5 +18,14 @@
         None, Left, Right
     }
 
-    
+    public enum TokenContext
+    {
+        ExpectValue,
+        ValueEnded
+
+
+    }
+
+
+
 }

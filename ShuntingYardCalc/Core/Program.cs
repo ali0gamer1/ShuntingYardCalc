@@ -148,6 +148,11 @@ namespace ShuntingYardCalc
 
                 List<string> hay = Parser.ToRPN(ls, registry);
 
+                foreach(var s in hay)
+                {
+                    Console.Write($"{s}, ");
+                }
+                Console.WriteLine();
                 Console.WriteLine(Evaluator.EvalRPN(hay, registry));
 
 

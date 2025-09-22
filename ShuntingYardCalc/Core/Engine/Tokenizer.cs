@@ -24,9 +24,12 @@ namespace ShuntingYardCalc
             //string lastTokenType = "";
 
 
-            TokenType currentTokenType, lastTokenType;
+            TokenType currentTokenType;
 
-            currentTokenType = lastTokenType = TokenType.None;
+            TokenContext lastContext = TokenContext.ExpectValue;
+
+
+            currentTokenType = TokenType.None;
 
 
             int NumOfArgument = 0;
@@ -36,14 +39,7 @@ namespace ShuntingYardCalc
                 char c = input[i];
 
 
-                if ((c == '+' || c == '-') && (lastTokenType == TokenType.Operator || lastTokenType == TokenType.Comma || (lastTokenType == TokenType.None && i==0) || lastTokenType == TokenType.Parenthesis))
-                {
 
-
-                    retList.Add(new Token(TokenType.UnaryOperator, $"u{c.ToString()}"));
-                }
-
-                else
                 if (char.IsDigit(c) || c == '.' && currentTokenType == TokenType.Number)
                 {
 
@@ -54,13 +50,14 @@ namespace ShuntingYardCalc
                     if (currentTokenType == TokenType.Identifier)
                     {
 
-
                         retList.Add(new Token(TokenType.Identifier, currentToken));
+                        
                         currentToken = "";
                         currentTokenType = TokenType.Number;
+
                     }
 
-                    lastTokenType = TokenType.Number;
+                    
                     currentToken += c;
 
                 }
@@ -71,7 +68,6 @@ namespace ShuntingYardCalc
 
                     if (currentTokenType == TokenType.Number)
                     {
-                        lastTokenType = TokenType.Number;
 
 
                         retList.Add(new Token(TokenType.Number, currentToken));
@@ -80,28 +76,36 @@ namespace ShuntingYardCalc
                         currentTokenType = TokenType.Identifier;
                     }
 
-                    lastTokenType = TokenType.Identifier;
+                    
                     currentToken += c;
 
                 }
 
                 else if (registry.IsOperator(c))
                 {
+                    bool hasPending = currentToken.Length > 0;
+                    var contextForOp = hasPending ? TokenContext.ValueEnded : lastContext;
 
-                    if (currentToken != "")
+                    if (hasPending)
                     {
-
-                        retList.Add(new Token(lastTokenType, currentToken));
+                        retList.Add(new Token(currentTokenType, currentToken));
                         currentToken = "";
                         currentTokenType = TokenType.None;
-
                     }
 
-                    lastTokenType = TokenType.Operator;
+                    bool isPlusMinus = (c == '+' || c == '-');
+                    bool isUnary = isPlusMinus && contextForOp == TokenContext.ExpectValue;
+
+                    if (isUnary)
+                        retList.Add(new Token(TokenType.UnaryOperator, $"u{c}"));
+                    else
+                        retList.Add(new Token(TokenType.Operator, c.ToString()));
 
 
-                    retList.Add(new Token(TokenType.Operator, c.ToString()));
+                    lastContext = TokenContext.ExpectValue;
 
+
+                    
                 }
                 else if (c == '(' || c == ')')
                 {
@@ -111,10 +115,7 @@ namespace ShuntingYardCalc
                     {
 
 
-
-
-
-                        retList.Add(new Token(lastTokenType, currentToken));
+                        retList.Add(new Token(currentTokenType, currentToken));
 
                         currentToken = "";
                         currentTokenType = TokenType.None;
@@ -123,10 +124,11 @@ namespace ShuntingYardCalc
 
 
                     if (c == '(')
-                        lastTokenType = TokenType.Parenthesis;
+                        lastContext = TokenContext.ExpectValue;
+
                     else
-                    if (lastTokenType == TokenType.Parenthesis)
-                        lastTokenType = TokenType.None;
+                        lastContext = TokenContext.ValueEnded;
+
 
                     retList.Add(new Token(TokenType.Parenthesis, c.ToString()));
 
@@ -138,13 +140,13 @@ namespace ShuntingYardCalc
                     {
 
 
-                        retList.Add(new Token(lastTokenType, currentToken));
+                        retList.Add(new Token(currentTokenType, currentToken));
 
                         currentToken = "";
                         currentTokenType = TokenType.None;
                     }
 
-                    lastTokenType = TokenType.Comma;
+                    lastContext = TokenContext.ExpectValue;
 
                     NumOfArgument++;
 
