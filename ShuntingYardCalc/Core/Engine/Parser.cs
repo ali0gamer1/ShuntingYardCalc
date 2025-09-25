@@ -104,6 +104,7 @@ namespace ShuntingYardCalc
 
 
 
+
                     while ((isTopAccessible = opStack.TryPeek(out topStack)) && topStack != "(" && registry.TryGetOperator(topStack, out tempStackOp) && registry.TryGetOperator(currentToken.token, out tempCurrentOp) && (tempStackOp.Precedence > tempCurrentOp.Precedence || tempStackOp.Precedence ==tempCurrentOp.Precedence &&tempCurrentOp.Associativity == Associativity.Left))
                     {
                         retList.Add(opStack.Pop());
@@ -163,7 +164,12 @@ namespace ShuntingYardCalc
                             if (n == 0 && seen) n = 1;
 
                             FunctionSpec func;
-                            registry.TryGetFunc(topStack, out func);
+                            
+                            if (!registry.TryGetFunc(topStack, out func))
+                            {
+                                throw new Exception($"Invalid identifier: {topStack}");
+                            }
+
 
                             if (func.FixedArity)
                             {

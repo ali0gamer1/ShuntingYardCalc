@@ -33,6 +33,8 @@ namespace ShuntingYardCalc
                     if (!registry.TryGetOperator(token, out op))
                         throw new Exception("Cannot get operator");
 
+
+
                     if (op.UnaryOperation == null && op.Operation != null)
                     {
                         if (TryPopTwo(resultstack, out a, out b))
@@ -88,7 +90,12 @@ namespace ShuntingYardCalc
 
                         resultstack.Push(funcspec.Run(args, argCount));    
                         
-                    }    
+                    } 
+                    else
+                    {
+                        // Reinforcement check
+                        throw new Exception($"Invalid identifier: {token}");
+                    }
 
                 }
               
@@ -99,7 +106,17 @@ namespace ShuntingYardCalc
 
                 }
                 else
-                    resultstack.Push(double.Parse(token));
+                
+                if (double.TryParse(token, out double res))
+                {
+                    resultstack.Push(res);
+                }
+                else
+                {
+                    throw new Exception("Invalid token exception");
+                }
+
+
 
 
 

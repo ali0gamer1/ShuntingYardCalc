@@ -81,18 +81,15 @@ namespace ShuntingYardCalc
 
                     Overloads =  new Dictionary<int, Func<double[], double>>
                     {
-
-                        [0]=(double[] args) =>
-                        {
+                        //inconsistency. (heh).
+                        [0] = args => {
                             return new Random().Next();
                         },
-                        [1]=(double[] args) =>
-                        {
+                        [1] = args => {
                             return new Random().Next((int)args[0]);
 
                         },
-                        [2]=(double[] args) =>
-                        {
+                        [2] = args => {
                             return new Random().Next((int)args[1], (int)args[0]);
 
                         },
