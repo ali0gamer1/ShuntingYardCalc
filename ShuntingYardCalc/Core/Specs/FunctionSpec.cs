@@ -4,21 +4,50 @@ namespace ShuntingYardCalc
     public class FunctionSpec
     {
         private string symbol;
-        private int precedence;
+        private int precedence = 9;
+
+        private Dictionary<int, Func<double[], double>> overloads = [];
+
         private Func<double[], double>? operation;
+
+
+
         private bool fixedArity;
         private int? arity;
         private int? minArity;
-        private int? maxArity;
 
 
-        public Func<double[], double>? Operation 
-        { get => operation; set => operation = value; }
+        public double Run(double[] args, int argcount)
+        {
+            if (minArity != null && operation!= null) 
+            {
+                return operation(args);
+            }
+
+
+
+            return overloads[argcount](args);
+
+        }
+
+
+
         public string Symbol { get => symbol; set => symbol = value; }
         public int Precedence { get => precedence; set => precedence = value; }
-        public int? Arity { get => arity; set => arity = value; }
+        public int? Arity { get => arity??0; 
+            
+            set 
+            {
+
+                arity = value??0;
+                    
+            
+            }
+        
+        }
         public int? MinArity { get => minArity; set => minArity = value; }
-        public int? MaxArity { get => maxArity; set => maxArity = value; }
         public bool FixedArity { get => fixedArity; set => fixedArity = value; }
+        public Dictionary<int, Func<double[], double>> Overloads { get => overloads; set => overloads = value; }
+        public Func<double[], double>? Operation { get => operation; set => operation = value; }
     }
 }

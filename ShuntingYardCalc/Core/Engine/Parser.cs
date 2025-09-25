@@ -71,11 +71,6 @@ namespace ShuntingYardCalc
 
                     if (seenArgStack.Peek() == false)
                     {
-                        foreach (var item in temp)
-                        {
-                            Console.Write(item + " ");
-                        }
-                        Console.WriteLine();
 
                         throw new Exception("syntax error: missing argument between commas");
                     }
@@ -100,6 +95,7 @@ namespace ShuntingYardCalc
                     bool isTopAccessible;
                     OperatorSpec tempStackOp;
                     OperatorSpec tempCurrentOp;
+
 
 
 
@@ -162,10 +158,31 @@ namespace ShuntingYardCalc
                             // If we never hit a comma but did see a value, it was a single-arg call
                             if (n == 0 && seen) n = 1;
 
-                            // Policy: forbid empty lists (change if you want max() to be allowed)
+                            FunctionSpec func;
                             
-                            // Emit variadic function token (minimal change: encode arity in the token)
-                            //retList.Add($"{topStack}#{n}");
+                            if (!registry.TryGetFunc(topStack, out func))
+                            {
+                                throw new Exception($"Invalid identifier: {topStack}");
+                            }
+
+
+                            if (func.FixedArity)
+                            {
+                                if (func.Arity != n)
+                                {
+                                    throw new Exception("invalid number of arguments");
+                                    
+                                }
+
+                            }
+                            else
+                            {
+                                if (!func.Overloads.ContainsKey(n) && (func.MinArity == null || func.MinArity > n))
+                                {
+                                    throw new Exception("invalid number of arguments");
+                                }
+                            }
+
 
 
                             retList.Add($"#{n}");

@@ -54,8 +54,13 @@ namespace ShuntingYardCalc
             ArgumentException.ThrowIfNullOrEmpty(symbol);
             ArgumentNullException.ThrowIfNull(funcspec);
 
+            if (funcspec.FixedArity)
+            {
+                funcspec.Overloads[funcspec.Arity.GetValueOrDefault()] = funcspec.Operation;
+            }
+            
 
-            functions.Add(symbol, funcspec);
+                functions.Add(symbol, funcspec);
 
         }
 

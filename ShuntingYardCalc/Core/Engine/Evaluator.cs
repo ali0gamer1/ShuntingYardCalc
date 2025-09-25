@@ -33,6 +33,8 @@ namespace ShuntingYardCalc
                     if (!registry.TryGetOperator(token, out op))
                         throw new Exception("Cannot get operator");
 
+
+
                     if (op.UnaryOperation == null && op.Operation != null)
                     {
                         if (TryPopTwo(resultstack, out a, out b))
@@ -75,20 +77,25 @@ namespace ShuntingYardCalc
 
                     int argCount = (int)tempArgCount;
 
-                    FunctionSpec funcspec;
 
                     double[] args = new double[argCount];
 
-                    for(int i = 0; i < argCount; i++)
+                    for (int i = 0; i < argCount; i++)
                     {
                         args[i] = resultstack.Pop();
                     }
 
-                    if (registry.TryGetFunc(token, out funcspec))
+                    if (registry.TryGetFunc(token, out FunctionSpec funcspec))
                     {
-                        resultstack.Push(funcspec.Operation(args));    
+
+                        resultstack.Push(funcspec.Run(args, argCount));    
                         
-                    }    
+                    } 
+                    else
+                    {
+                        // Reinforcement check
+                        throw new Exception($"Invalid identifier: {token}");
+                    }
 
                 }
               
@@ -99,7 +106,17 @@ namespace ShuntingYardCalc
 
                 }
                 else
-                    resultstack.Push(double.Parse(token));
+                
+                if (double.TryParse(token, out double res))
+                {
+                    resultstack.Push(res);
+                }
+                else
+                {
+                    throw new Exception("Invalid token exception");
+                }
+
+
 
 
 
