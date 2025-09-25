@@ -71,11 +71,6 @@ namespace ShuntingYardCalc
 
                     if (seenArgStack.Peek() == false)
                     {
-                        foreach (var item in temp)
-                        {
-                            Console.Write(item + " ");
-                        }
-                        Console.WriteLine();
 
                         throw new Exception("syntax error: missing argument between commas");
                     }
