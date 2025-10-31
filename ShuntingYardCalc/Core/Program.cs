@@ -145,9 +145,6 @@ namespace ShuntingYardCalc
             {
                 registry.RegisterFunction(funcspec.Symbol, funcspec);
             }
-
-
-
         }
 
 
@@ -159,7 +156,6 @@ namespace ShuntingYardCalc
 
             while (true)
             {
-
 
                 string? inp = Console.ReadLine();
 
@@ -173,7 +169,6 @@ namespace ShuntingYardCalc
                 List<string> hay = Parser.ToRPN(ls, registry);
 
                 Console.WriteLine(Evaluator.EvalRPN(hay, registry));
-
 
 
             }
